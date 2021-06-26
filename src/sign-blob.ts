@@ -1,6 +1,6 @@
 import { IAMCredentialsClient, protos }  from '@google-cloud/iam-credentials';
 
-const iam = new IAMCredentialsClient();
+const iam = new IAMCredentialsClient({ projectId: process.env.GCP_PROJECT_ID });
 
 export const signBlobFor = (seriveAccountId: string) => {
   return new Promise((resolve, reject) => {
