@@ -9,7 +9,6 @@
     "@google-cloud/iam-credentials": "^1.0.4",
     "@google-cloud/storage": "^5.8.5",
     "blueimp-load-image": "^5.14.0",
-    "dayjs": "^1.10.5",
     "express": "^4.17.1"
   },
   "devDependencies": {
