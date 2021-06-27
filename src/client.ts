@@ -20,6 +20,9 @@ const uploadFile = (url: string, file) => {
 
   return fetch(url, {
     method: "put",
+    headers: {
+      'content-type': "image/jpeg"
+    },
     body: formData,
   }).then((response) => {
     return response.json();
@@ -32,7 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const upload = document.getElementById("upload"); 
   upload.addEventListener("change", (evt: Event) => {
     if (evt.target instanceof HTMLInputElement) {
-      loadImage(evt.target.files[0], (image: HTMLImageElement, data) => {
+      const file = evt.target.files[0];
+      loadImage(file, (image: HTMLImageElement, data) => {
         const canvas = document.createElement("canvas"); 
         canvas.width = image.width;
         canvas.height = image.height;
@@ -41,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.drawImage(image, 0, 0);
 
         canvas.toBlob((blob: Blob) => {
-          signedURL("example.jpg").then(({ url }) => {
+          signedURL(file.name).then(({ url }) => {
             return uploadFile(url, blob);
           }).then(() => {
             console.log("uploaded");
