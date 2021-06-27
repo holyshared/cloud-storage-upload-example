@@ -10,11 +10,13 @@ const storage = new Storage({
 export const signedUrl = async (name: string): Promise<{
   url: string
 }> => {
-  const options = {};
+  const options = {
+  };
   const expires = dayjs().add(SIGNED_EXPIRES, 'minute').toDate();
 
   return new Promise((resolve, reject) => {
     return storage.bucket(process.env.GCP_STORAGE_BUCKET).file(name, options).getSignedUrl({
+      version: 'v4',
       action: 'write',
       expires,
     }, (err: Error, url: string) => {
