@@ -15,15 +15,12 @@ const signedURL = (name: string) => {
 };
 
 const uploadFile = (url: string, file) => {
-  const formData = new FormData();
-  formData.append("file", file);
-
   return fetch(url, {
     method: "put",
     headers: {
       'content-type': "image/jpeg"
     },
-    body: formData,
+    body: file,
   }).then((response) => {
     return response.json();
   });
