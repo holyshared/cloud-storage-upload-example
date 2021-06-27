@@ -38,15 +38,9 @@ resource "google_project_iam_member" "service_account_user" {
   member  = "serviceAccount:${google_service_account.storage_client.email}"
 }
 
-resource "google_project_iam_member" "object_creator" {
+resource "google_project_iam_member" "object_manager" {
   project = module.project-factory.project_id
-  role    = "roles/storage.objectCreator"
-  member  = "serviceAccount:${google_service_account.storage_client.email}"
-}
-
-resource "google_project_iam_member" "object_viewer" {
-  project = module.project-factory.project_id
-  role    = "roles/storage.objectViewer"
+  role    = "roles/storage.objectAdmin"
   member  = "serviceAccount:${google_service_account.storage_client.email}"
 }
 
@@ -62,4 +56,10 @@ resource "google_storage_bucket" "images" {
   location = "asia-northeast1"
 
   force_destroy = true
+
+  cors {
+    origin = ["http://localhost:3000"]
+    method = ["POST", "PUT", "DELETE"]
+    response_header = ["*"]
+  }
 }
