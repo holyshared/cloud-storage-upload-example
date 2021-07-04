@@ -22,7 +22,8 @@ module "project-factory" {
   folder_id         = var.folder_id
 
   activate_apis = [
-    "iam.googleapis.com"
+    "iam.googleapis.com",
+    "dns.googleapis.com"
   ]
 }
 
