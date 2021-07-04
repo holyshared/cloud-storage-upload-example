@@ -50,9 +50,9 @@ resource "google_project_iam_member" "service_account_token_creator" {
   member  = "serviceAccount:${google_service_account.storage_client.email}"
 }
 
-resource "google_storage_bucket" "images" {
+resource "google_storage_bucket" "private-images" {
   project  = module.project-factory.project_id
-  name     = "images-${module.project-factory.project_id}"
+  name     = "private-images-${module.project-factory.project_id}"
   location = "asia-northeast1"
 
   force_destroy = true
@@ -62,4 +62,12 @@ resource "google_storage_bucket" "images" {
     method = ["POST", "PUT", "DELETE"]
     response_header = ["*"]
   }
+}
+
+resource "google_storage_bucket" "public-images" {
+  project  = module.project-factory.project_id
+  name     = "public-images-${module.project-factory.project_id}"
+  location = "asia-northeast1"
+
+  force_destroy = true
 }
