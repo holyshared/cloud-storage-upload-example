@@ -58,8 +58,8 @@ resource "google_storage_bucket" "private-images" {
   force_destroy = true
 
   cors {
-    origin = ["http://localhost:3000"]
-    method = ["POST", "PUT", "DELETE"]
+    origin          = ["http://localhost:3000"]
+    method          = ["POST", "PUT", "DELETE"]
     response_header = ["*"]
   }
 }
@@ -70,4 +70,40 @@ resource "google_storage_bucket" "public-images" {
   location = "asia-northeast1"
 
   force_destroy = true
+}
+
+resource "google_compute_backend_bucket" "cdn-backend-bucket" {
+  project     = module.project-factory.project_id
+  name        = "backend-${google_storage_bucket.public-images.name}"
+  bucket_name = "public-images-${module.project-factory.project_id}"
+  enable_cdn  = true
+}
+
+resource "google_compute_url_map" "cdn" {
+  project         = module.project-factory.project_id
+  name            = "public-images-cdn"
+  default_service = google_compute_backend_bucket.cdn-backend-bucket.id
+}
+
+resource "google_compute_target_https_proxy" "cdn-proxy" {
+  project          = module.project-factory.project_id
+  name             = "proxy-${module.project-factory.project_id}"
+  url_map          = google_compute_url_map.cdn.id
+  ssl_certificates = [google_compute_managed_ssl_certificate.tls.id]
+}
+
+resource "google_compute_managed_ssl_certificate" "tls" {
+  project  = module.project-factory.project_id
+  provider = google-beta
+  name     = "public-images-${module.project-factory.project_id}"
+  managed {
+    domains = [var.domain]
+  }
+}
+
+resource "google_compute_global_forwarding_rule" "cdn" {
+  project    = module.project-factory.project_id
+  name       = "public-images-${module.project-factory.project_id}"
+  target     = google_compute_target_https_proxy.cdn-proxy.self_link
+  port_range = 443
 }
