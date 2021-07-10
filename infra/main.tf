@@ -72,10 +72,10 @@ resource "google_storage_bucket" "public-images" {
   force_destroy = true
 }
 
-resource "google_storage_bucket_iam_member" "all-users" {
+resource "google_storage_bucket_iam_member" "signed-url-user" {
   bucket = google_storage_bucket.public-images.name
   role   = "roles/storage.objectViewer"
-  member  = "allUsers"
+  member  = "serviceAccount:service-${module.project-factory.project_number}@cloud-cdn-fill.iam.gserviceaccount.com"
 }
 
 resource "google_compute_backend_bucket" "cdn-backend-bucket" {
@@ -83,6 +83,17 @@ resource "google_compute_backend_bucket" "cdn-backend-bucket" {
   name        = "backend-${google_storage_bucket.public-images.name}"
   bucket_name = "public-images-${module.project-factory.project_id}"
   enable_cdn  = true
+}
+
+resource "random_id" "url_signature" {
+  byte_length = 16
+}
+
+resource "google_compute_backend_bucket_signed_url_key" "backend_key" {
+  project     = module.project-factory.project_id
+  name           = "public-backend-bucket-key"
+  key_value      = random_id.url_signature.b64_url
+  backend_bucket = google_compute_backend_bucket.cdn-backend-bucket.name
 }
 
 resource "google_compute_url_map" "cdn" {
