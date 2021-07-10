@@ -72,6 +72,12 @@ resource "google_storage_bucket" "public-images" {
   force_destroy = true
 }
 
+resource "google_storage_bucket_iam_member" "all-users" {
+  bucket = google_storage_bucket.public-images.name
+  role   = "roles/storage.objectViewer"
+  member  = "allUsers"
+}
+
 resource "google_compute_backend_bucket" "cdn-backend-bucket" {
   project     = module.project-factory.project_id
   name        = "backend-${google_storage_bucket.public-images.name}"
