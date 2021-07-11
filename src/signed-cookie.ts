@@ -13,8 +13,7 @@ export const ENCODED_URL_PREFIX = (Buffer.from(`https://${SIGNED_URL_DOMAIN}${SI
 export const signedCookie = (seconds: number) => {
   const unixTimestamp = dayjs().add(seconds, 'seconds').unix();
   const input = `URLPrefix=${ENCODED_URL_PREFIX}:Expires=${unixTimestamp}:KeyName=${SIGNED_URL_KEY_NAME}`;
-  const signature =  crypto.createHmac('sha1', SIGNED_URL_KEY_VALUE).update(input).digest('hex');
-  const encodedSignature = Buffer.from(signature).toString("base64");
+  const signature =  crypto.createHmac('sha1', SIGNED_URL_KEY_VALUE).update(input).digest('base64');
 
-  return `${input}:Signature=${encodedSignature}`;
+  return `${input}:Signature=${signature}`;
 }
