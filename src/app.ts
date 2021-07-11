@@ -23,6 +23,13 @@ app.get("/", (req: Request<{}, {}, { name: string }>, res: Response, next: NextF
     secure: true,
     sameSite: 'none'
   });
+  res.cookie('Cloud-CDN-Cookie', signedCookie(SIGNED_URL_MAX_AGE_SECONDS), {
+    domain: process.env.DOMAIN,
+    path: "/",
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none'
+  });
 
   res.render("index.pug");
 });
