@@ -70,6 +70,12 @@ resource "google_storage_bucket" "public-images" {
   location = "asia-northeast1"
 
   force_destroy = true
+
+  cors {
+    origin          = ["https://${var.domain}"]
+    method          = ["GET"]
+    response_header = ["*"]
+  }
 }
 
 resource "google_storage_bucket_iam_member" "signed-url-user" {
