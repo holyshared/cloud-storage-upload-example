@@ -1,6 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
 import { signedUrl } from "./storage";
-import { signedCookie, SIGNED_URL_DOMAIN, SIGNED_URL_PATH, SIGNED_URL_MAX_AGE_SECONDS } from "./signed-cookie";
+import { signedCookie } from "./signed-cookie";
+import { signedURLOfImage } from "./signed-url";
+import { SIGNED_URL_DOMAIN, SIGNED_URL_PATH, SIGNED_URL_MAX_AGE_SECONDS } from "./signed";
 
 const app = express();
 
@@ -23,7 +25,7 @@ app.get("/", (req: Request<{}, {}, { name: string }>, res: Response, next: NextF
     sameSite: 'none'
   });
 
-  res.render("index.pug");
+  res.render("index.pug", { signedUrl: signedURLOfImage("demo.jpg") });
 });
 
 app.post("/signed", (req: Request<{}, {}, { name: string }>, res: Response, next: NextFunction) => {
