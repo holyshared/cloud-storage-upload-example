@@ -14,6 +14,7 @@ export const signedCookie = (seconds: number) => {
   const unixTimestamp = dayjs().add(seconds, 'seconds').unix();
   const input = `URLPrefix=${ENCODED_URL_PREFIX}:Expires=${unixTimestamp}:KeyName=${SIGNED_URL_KEY_NAME}`;
   const signature =  crypto.createHmac('sha1', SIGNED_URL_KEY_VALUE).update(input).digest('hex');
+  const encodedSignature = Buffer.from(signature).toString("base64");
 
-  return `${input}:Signature=${signature}`;
+  return `${input}:Signature=${encodedSignature}`;
 }
