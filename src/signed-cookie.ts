@@ -1,12 +1,17 @@
 import crypto from 'crypto';
 import dayjs from 'dayjs';
 
-const SIGNED_URL_KEY_NAME = process.env.SIGNED_URL_KEY_NAME;
-const SIGNED_URL_KEY_VALUE = process.env.SIGNED_URL_KEY_VALUE;
-const ENCODED_URL_PREFIX = (Buffer.from(process.env.SIGNED_URL_PREFIX)).toString("base64");
+export const SIGNED_URL_KEY_NAME = process.env.SIGNED_URL_KEY_NAME;
+export const SIGNED_URL_KEY_VALUE = process.env.SIGNED_URL_KEY_VALUE;
 
-export const signedCookie = (day: number) => {
-  const unixTimestamp = dayjs().add(day, 'day').unix();
+export const SIGNED_URL_MAX_AGE_SECONDS = Number(process.env.SIGNED_URL_MAX_AGE_SECONDS); 
+export const SIGNED_URL_DOMAIN = process.env.SIGNED_URL_DOMAIN;
+export const SIGNED_URL_PATH = process.env.SIGNED_URL_PATH;
+
+export const ENCODED_URL_PREFIX = (Buffer.from(`https://${SIGNED_URL_DOMAIN}${SIGNED_URL_PATH}`)).toString("base64");
+
+export const signedCookie = (seconds: number) => {
+  const unixTimestamp = dayjs().add(seconds, 'seconds').unix();
   const input = `URLPrefix=${ENCODED_URL_PREFIX}:Expires=${unixTimestamp}:KeyName=${SIGNED_URL_KEY_NAME}`;
   const signature =  crypto.createHmac('sha1', SIGNED_URL_KEY_VALUE).update(input).digest('hex');
 

@@ -10,7 +10,8 @@
     "@google-cloud/storage": "^5.8.5",
     "blueimp-load-image": "^5.14.0",
     "dayjs": "^1.10.6",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "pug": "^3.0.2"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^19.0.0",
