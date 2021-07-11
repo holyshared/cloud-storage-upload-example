@@ -17,7 +17,8 @@ app.use(express.json());
 app.get("/", (req: Request<{}, {}, { name: string }>, res: Response, next: NextFunction) => {
   res.cookie('Cloud-CDN-Cookie', signedCookie(SIGNED_URL_MAX_AGE_SECONDS), {
     domain: SIGNED_URL_DOMAIN,
-    path: SIGNED_URL_PATH,
+//    path: SIGNED_URL_PATH,
+    path: "/",
     httpOnly: true,
     secure: true,
     sameSite: 'none'
