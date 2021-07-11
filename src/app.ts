@@ -19,7 +19,8 @@ app.get("/", (req: Request<{}, {}, { name: string }>, res: Response, next: NextF
     domain: SIGNED_URL_DOMAIN,
     path: SIGNED_URL_PATH,
     httpOnly: true,
-    secure: true
+    secure: true,
+    sameSite: 'none'
   });
 
   res.render("index.pug");
