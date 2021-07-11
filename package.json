@@ -4,7 +4,8 @@
     "build": "yarn build:client && yarn build:server",
     "build:client": "rollup -c",
     "build:server": "tsc",
-    "cookie:generate": "ts-node ./scripts/gen-cookie.ts"
+    "cookie:generate": "ts-node ./scripts/gen-cookie.ts",
+    "url:generate": "ts-node ./scripts/gen-url.ts"
   },
   "dependencies": {
     "@google-cloud/iam-credentials": "^1.0.4",
