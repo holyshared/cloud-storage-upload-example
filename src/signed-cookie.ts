@@ -8,7 +8,7 @@ export const SIGNED_URL_MAX_AGE_SECONDS = Number(process.env.SIGNED_URL_MAX_AGE_
 export const SIGNED_URL_DOMAIN = process.env.SIGNED_URL_DOMAIN;
 export const SIGNED_URL_PATH = process.env.SIGNED_URL_PATH;
 
-export const ENCODED_URL_PREFIX = (Buffer.from(`https://${SIGNED_URL_DOMAIN}${SIGNED_URL_PATH}`))
+export const ENCODED_URL_PREFIX = (Buffer.from(`https://${SIGNED_URL_DOMAIN}${SIGNED_URL_PATH}/`))
   .toString("base64")
   .replace(/\+/g, "-")
   .replace(/\//g, "_");
