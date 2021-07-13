@@ -82,6 +82,9 @@ resource "google_storage_bucket_iam_member" "signed-url-user" {
   bucket = google_storage_bucket.public-images.name
   role   = "roles/storage.objectViewer"
   member  = "serviceAccount:service-${module.project-factory.project_number}@cloud-cdn-fill.iam.gserviceaccount.com"
+  depends_on = [
+    google_compute_backend_bucket_signed_url_key.backend_key
+  ]
 }
 
 resource "google_compute_backend_bucket" "cdn-backend-bucket" {
